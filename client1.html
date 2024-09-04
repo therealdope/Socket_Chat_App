@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client 1</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-blue-50 flex items-center justify-center h-screen">
+    <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-blue-600 mb-4">Client 1</h2>
+        <div id="chat" class="space-y-4 h-96 overflow-y-auto mb-4">
+            <!-- Messages will be displayed here -->
+        </div>
+        <div class="flex space-x-4">
+            <input id="message" type="text" placeholder="Type a message" class="w-full p-2 border border-none rounded-md focus:outline-none focus:ring focus:border-blue-300">
+            <button onclick="sendMessage()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            if(message.trim()){
+                socket.send(message);
+                addMessage(message, true);
+                document.getElementById('message').value = '';
+            }
+        }
+
+        socket.on('message', (msg) => {
+            addMessage(msg, false);
+        });
+
+        function addMessage(message, isOwnMessage) {
+            const chat = document.getElementById('chat');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('p-3', 'rounded-lg', 'text-white', 'max-w-xs', 'self-end');
+
+            if (isOwnMessage) {
+                messageElement.classList.add('bg-blue-500');
+                messageElement.classList.add('ml-auto'); // Align own messages to the right
+            } else {
+                messageElement.classList.add('bg-gray-300', 'text-black');
+                messageElement.classList.add('mr-auto'); // Align received messages to the left
+            }
+
+            messageElement.textContent = message;
+            chat.appendChild(messageElement);
+            chat.scrollTop = chat.scrollHeight; // autometically scroll to buttom
+        }
+
+        document.getElementById('message').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
