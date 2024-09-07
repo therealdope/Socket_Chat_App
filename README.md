@@ -21,21 +21,20 @@ This is a real-time chat application built using Node.js, Express, and Socket.IO
 ## Installation
 
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/yourusername/your-repository.git
    
 2. Navigate to the project directory:
-  ```bash
-  cd your-repository
-  ```
+   ```bash
+   cd your-repository
+     
 3. Install the required npm packages:
    ```bash
    npm install express socket.io
    npm init -y
 
 4. Start the server:
-  ```bash
-  node server.js
-  ```
+   ```bash
+   node server.js
+   
 5. Open Clint1 and Clint2 in localhost on browser in seperate tabs.
